@@ -1,0 +1,28 @@
+{
+  "name": "rss-bot",
+  "version": "1.0.0",
+  "description": "telegram bot to pull rss feed and post to channel",
+  "main": "index.js",
+  "author": "Vincent <jan-vincent.wyszynski@charite.de>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./index.js",
+    "serve": "nodemon ./index.js"
+  },
+  "engines": {
+    "node": "9.1.0",
+    "npm": "5.5.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/timum-viw/rss-bot.git"
+  },
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "node-telegram-bot-api": "^0.29.0",
+    "superagent": "^3.8.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.13.0"
+  }
+}
