@@ -12,6 +12,8 @@ const bot = new TelegramBot(TOKEN, options)
 
 bot.setWebHook(`${process.env.APP_URL}/bot${TOKEN}`)
 
+const feed new require('./feed')(process.env.FEED_URL)
+
 const commands = {
 	start(params) {
 		sendMessage(`Send me your location or the name of a place you want to know about.`)
@@ -41,27 +43,10 @@ function sendMessage(msg, options) {
 	bot.sendMessage(message.chat.id, msg, options)
 }
 
-function getFeed(numEntries) {
-	let url = process.env.FEED_URL
-	url = `https://query.yahooapis.com/v1/public/yql?q=select * from rss where url="${url}" limit ${numEntries}&format=json&callback=`
-	return superagent.get(url).then((res) => {
-		return res.body.query.results.item
-	})
-}
-
-function sendFeed(results) {
-	let msgs = results.map((entry) => {
-		return `*${entry.title}*
-${entry.description}
-_vom ${new Date(entry.pubDate).toLocaleString()}_
-`
-	})
-	for(let msg of msgs) sendMessage(msg)
-}
-
 function sendAnswer() {
-	getFeed(10).then((res) => {
-		sendFeed(res)
+	feed.get(10).then((res) => {
+		let msgs = feed.format(res)
+		for(let msg of msgs) sendMessage(msg)
 	}, (err) => {
 		console.log(err)
 		sendMessage(`My data dealer seems to have problems. Please try again later.`)
